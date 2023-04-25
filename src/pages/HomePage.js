@@ -10,7 +10,7 @@ export default function HomePage() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token")
   useEffect(()=>{
-    const url = "http://localhost:5000/movimentacoes";
+    const url = "https://digitalwallet-api.onrender.com/movimentacoes";
     const config = {headers: {Authorization: `Bearer ${token}`}}
     axios.get(url,config)
       .then((res)=>{

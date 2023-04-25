@@ -24,7 +24,7 @@ export default function SignUpPage() {
   }
 
   const request = () =>{
-    const url = "http://localhost:5000/cadastro";
+    const url = "https://digitalwallet-api.onrender.com/cadastro";
     axios.post(url, form)
       .then((res)=>{
         console.log(res)
