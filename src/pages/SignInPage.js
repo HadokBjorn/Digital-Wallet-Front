@@ -5,10 +5,10 @@ import { useRef } from "react";
 import axios from "axios";
 
 export default function SignInPage() {
+  const navigate = useNavigate();
   const form = {email:"", password:""}
   const emailRef = useRef("");
   const passwordRef = useRef("");
-  const navigate = useNavigate();
 
   const buttonClick = () =>{
     form.email = emailRef.current.value;

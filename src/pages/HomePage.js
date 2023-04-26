@@ -40,7 +40,7 @@ export default function HomePage() {
                 <ListItemContainer key={i}>
                   <div>
                     <span>{t.date}</span>
-                    <strong>Almoço mãe</strong>
+                    <strong>{t.title}</strong>
                   </div>
                   <Value color={t.type==="saida"?"negativo":"positivo"}>{t.value}</Value>
                 </ListItemContainer>
@@ -56,11 +56,12 @@ export default function HomePage() {
 
 
       <ButtonsContainer>
-        <button>
+        <button onClick={()=>navigate("/nova-transacao/entrada")}>
           <AiOutlinePlusCircle />
           <p>Nova <br /> entrada</p>
         </button>
-        <button>
+
+        <button onClick={()=>navigate("/nova-transacao/saída")}>
           <AiOutlineMinusCircle />
           <p>Nova <br />saída</p>
         </button>
