@@ -22,10 +22,10 @@ export default function SignUpPage() {
     }else{
       alert("Senha e confirmação de senha devem ser iguais!")
     }
-    console.log(form)
   }
 
   const request = () =>{
+    setLoading(true)
     const url = "https://digitalwallet-api.onrender.com/cadastro";
     axios.post(url, form)
       .then((res)=>{
@@ -41,8 +41,8 @@ export default function SignUpPage() {
 
   const register = (e) =>{
     e.preventDefault();
-    setLoading(true)
     buttonClick();
+    if(form.email===""||form.name===""||form.password==="")return alert("Todos os campos devem ser preenchidos")
     request();
   }
   if(loading){

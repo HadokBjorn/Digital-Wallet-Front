@@ -23,6 +23,7 @@ export default function TransactionsPage() {
     form.type = tipo==="saída"?"saida":tipo;
   }
   const request = () => {
+    setLoading(true)
     const url = "https://digitalwallet-api.onrender.com/transacao";
     const config = {headers: {Authorization: `Bearer ${token}`}}
 
@@ -40,8 +41,9 @@ export default function TransactionsPage() {
   }
   const transaction = (e) =>{
     e.preventDefault();
-    setLoading(true)
     buttonClick();
+    if(form.value===""||form.title==="")return alert("Todos os campos devem ser preenchidos")
+    
     request();
   }
   if(loading){

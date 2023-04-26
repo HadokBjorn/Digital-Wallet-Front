@@ -16,6 +16,7 @@ export default function SignInPage() {
   }
 
   const request = () =>{
+    setLoading(true)
     const url = `https://digitalwallet-api.onrender.com/login`;
     axios.post(url, form)
     .then((res)=>{
@@ -31,8 +32,8 @@ export default function SignInPage() {
 
   const login = (e) =>{
     e.preventDefault();
-    setLoading(true)
     buttonClick();
+    if(form.email===""||form.password==="")return alert("Todos os campos devem ser preenchidos")
     request();
   }
   if(loading){
