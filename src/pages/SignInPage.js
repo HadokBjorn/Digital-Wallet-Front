@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { Link, useNavigate } from "react-router-dom"
 import MyWalletLogo from "../components/MyWalletLogo"
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
 
 export default function SignInPage() {
@@ -9,7 +9,7 @@ export default function SignInPage() {
   const form = {email:"", password:""}
   const emailRef = useRef("");
   const passwordRef = useRef("");
-
+  const [loading, setLoading] = useState(false)
   const buttonClick = () =>{
     form.email = emailRef.current.value;
     form.password = passwordRef.current.value;
@@ -20,6 +20,7 @@ export default function SignInPage() {
     axios.post(url, form)
     .then((res)=>{
       localStorage.setItem("token",res.data)
+      setLoading(false)
       navigate("/home")
     })
     .catch((err)=>alert(err.response.data))
@@ -27,10 +28,17 @@ export default function SignInPage() {
 
   const login = (e) =>{
     e.preventDefault();
+    setLoading(true)
     buttonClick();
     request();
   }
-  
+  if(loading){
+    return(
+      <SingInContainer className="center">
+        <span className="loader"></span>
+      </SingInContainer>
+    )
+  }
   return (
     <SingInContainer>
       <form onSubmit={login}>
@@ -41,7 +49,7 @@ export default function SignInPage() {
         <button type="submit" >Entrar</button>
       </form>
 
-      <Link>
+      <Link to={"/cadastro"}>
         Primeira vez? Cadastre-se!
       </Link>
     </SingInContainer>

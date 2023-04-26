@@ -9,13 +9,16 @@ export default function HomePage() {
   const [data, setData] = useState(null);
   const navigate = useNavigate();
   const token = localStorage.getItem("token")
-  console.log(data)
+  const [loading, setLoading] = useState(false)
+  
   useEffect(()=>{
+    setLoading(true)
+    if (!token) return navigate("/");
     const url = "https://digitalwallet-api.onrender.com/movimentacoes";
     const config = {headers: {Authorization: `Bearer ${token}`}}
     axios.get(url,config)
       .then((res)=>{
-        console.log(res.data)
+        setLoading(false)
         setData(res.data)
       })
       .catch((err)=>{
@@ -24,11 +27,28 @@ export default function HomePage() {
         navigate("/")
       })
   },[token, navigate])
+
+  const logout = () =>{
+    localStorage.setItem("token","")
+    navigate("/")
+  }
+  if(loading){
+    return(
+      <HomeContainer>
+        <TransactionsContainer>
+          <ul className="ul-empty">
+            <span className="loader"></span>
+          </ul>
+        </TransactionsContainer>
+      </HomeContainer>
+    )
+  }
+
   return (
     <HomeContainer>
       <Header>
         <h1>Olá, {data===null?"Fulano":data.name}</h1>
-        <BiExit />
+        <BiExit onClick={logout}/>
       </Header>
 
       {data===null?"":
@@ -75,6 +95,13 @@ const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: calc(100vh - 50px);
+  .loader{
+    left: -14px;
+  }
+.loader::after {
+  background: #8c11be;
+  }
+  
 `
 const Header = styled.header`
   display: flex;

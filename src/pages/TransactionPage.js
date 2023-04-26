@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
 
@@ -10,7 +10,12 @@ export default function TransactionsPage() {
   const titleRef = useRef("");
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false)
 
+
+  useEffect(()=>{
+  if (!token) return navigate("/");
+  },[navigate,token])
 
   const buttonClick = () =>{
     form.value = valueRef.current.value.toString();
@@ -24,7 +29,7 @@ export default function TransactionsPage() {
     axios.post(url, form, config)
       .then(()=>{
         console.log("transação feita");
-        console.log(form)
+        setLoading(false)
         navigate("/home")
       })
       .catch((err)=>{
@@ -34,8 +39,18 @@ export default function TransactionsPage() {
   }
   const transaction = (e) =>{
     e.preventDefault();
+    setLoading(true)
     buttonClick();
     request();
+  }
+  if(loading){
+    return(
+      <TransactionsContainer>
+        <div className="center">
+          <span className="loader"></span>
+        </div>
+      </TransactionsContainer>
+    )
   }
   return (
     <TransactionsContainer>
@@ -55,6 +70,11 @@ const TransactionsContainer = styled.main`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  
+  div{
+    width: inherit;
+    height: inherit;
+  }
 
   h1 {
     align-self: flex-start;

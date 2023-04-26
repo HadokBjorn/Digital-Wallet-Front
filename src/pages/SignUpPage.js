@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import MyWalletLogo from "../components/MyWalletLogo"
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import axios from "axios"
 
 export default function SignUpPage() {
@@ -11,6 +11,8 @@ export default function SignUpPage() {
   const passwordRef = useRef("");
   const doublePasswordRef = useRef("")
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false)
+
 
   const buttonClick = () =>{
     form.name = nameRef.current.value;
@@ -28,6 +30,7 @@ export default function SignUpPage() {
     axios.post(url, form)
       .then((res)=>{
         console.log(res)
+        setLoading(false)
         navigate("/")
       })
       .catch((err)=>alert(err.response.data))
@@ -35,8 +38,16 @@ export default function SignUpPage() {
 
   const register = (e) =>{
     e.preventDefault();
+    setLoading(true)
     buttonClick();
     request();
+  }
+  if(loading){
+    return(
+      <SingUpContainer className="center">
+        <span className="loader"></span>
+      </SingUpContainer>
+    )
   }
   return (
     <SingUpContainer>
@@ -49,7 +60,7 @@ export default function SignUpPage() {
         <button type="submit">Cadastrar</button>
       </form>
 
-      <Link>
+      <Link to={"/"}>
         Já tem uma conta? Entre agora!
       </Link>
     </SingUpContainer>
