@@ -33,7 +33,10 @@ export default function SignUpPage() {
         setLoading(false)
         navigate("/")
       })
-      .catch((err)=>alert(err.response.data))
+      .catch((err)=>{
+        setLoading(false)
+        alert(err.response.data)
+      })
   }
 
   const register = (e) =>{

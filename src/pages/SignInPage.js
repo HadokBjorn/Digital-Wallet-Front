@@ -23,7 +23,10 @@ export default function SignInPage() {
       setLoading(false)
       navigate("/home")
     })
-    .catch((err)=>alert(err.response.data))
+    .catch((err)=>{
+      setLoading(false)
+      alert(err.response.data)
+    })
   }
 
   const login = (e) =>{

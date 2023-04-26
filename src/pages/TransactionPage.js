@@ -34,6 +34,7 @@ export default function TransactionsPage() {
       })
       .catch((err)=>{
         console.log(err)
+        setLoading(false)
         alert("Erro ao fazer transação, tente novamente!")
       })
   }

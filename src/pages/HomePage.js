@@ -23,6 +23,7 @@ export default function HomePage() {
       })
       .catch((err)=>{
         console.log(err)
+        setLoading(false)
         alert("Erro ao carregar dados, faça login novamente!")
         navigate("/")
       })
