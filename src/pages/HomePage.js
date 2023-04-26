@@ -6,15 +6,16 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
-  const {data, setData} = useState("");
+  const [data, setData] = useState(null);
   const navigate = useNavigate();
   const token = localStorage.getItem("token")
+  console.log(data)
   useEffect(()=>{
     const url = "https://digitalwallet-api.onrender.com/movimentacoes";
     const config = {headers: {Authorization: `Bearer ${token}`}}
     axios.get(url,config)
       .then((res)=>{
-        console.log(res)
+        console.log(res.data)
         setData(res.data)
       })
       .catch((err)=>{
@@ -22,38 +23,36 @@ export default function HomePage() {
         alert("Erro ao carregar dados, faça login novamente!")
         navigate("/")
       })
-  })
+  },[token, navigate])
   return (
     <HomeContainer>
       <Header>
-        <h1>Olá, Fulano</h1>
+        <h1>Olá, {data===null?"Fulano":data.name}</h1>
         <BiExit />
       </Header>
 
+      {data===null?"":
       <TransactionsContainer>
-        <ul>
-          <ListItemContainer>
-            <div>
-              <span>30/11</span>
-              <strong>Almoço mãe</strong>
-            </div>
-            <Value color={"negativo"}>120,00</Value>
-          </ListItemContainer>
+        <ul className={data.transactions.length === 0?"ul-empty":""}>
+          {data.transactions.length === 0?
+            <p>Não há registros de entrada ou saída</p>:
+            data.transactions.map((t, i)=>(
+                <ListItemContainer key={i}>
+                  <div>
+                    <span>{t.date}</span>
+                    <strong>Almoço mãe</strong>
+                  </div>
+                  <Value color={t.type==="saida"?"negativo":"positivo"}>{t.value}</Value>
+                </ListItemContainer>
+            ))}
 
-          <ListItemContainer>
-            <div>
-              <span>15/11</span>
-              <strong>Salário</strong>
-            </div>
-            <Value color={"positivo"}>3000,00</Value>
-          </ListItemContainer>
         </ul>
 
         <article>
           <strong>Saldo</strong>
-          <Value color={"positivo"}>2880,00</Value>
+          <Value color={"positivo"}>{data.totalBalance.toFixed(2).replace(".",",")}</Value>
         </article>
-      </TransactionsContainer>
+      </TransactionsContainer>}
 
 
       <ButtonsContainer>
@@ -100,6 +99,17 @@ const TransactionsContainer = styled.article`
     strong {
       font-weight: 700;
       text-transform: uppercase;
+    }
+  }
+  .ul-empty{
+    width: 100%;
+    height: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    p{
+      width: 180px;
+      text-align: center;
     }
   }
 `

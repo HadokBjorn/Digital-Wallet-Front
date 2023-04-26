@@ -44,8 +44,8 @@ export default function SignUpPage() {
         <MyWalletLogo />
         <input placeholder="Nome" type="text" ref={nameRef} />
         <input placeholder="E-mail" type="email" ref={emailRef} />
-        <input placeholder="Senha" type="password" autocomplete="new-password" ref={passwordRef}/>
-        <input placeholder="Confirme a senha" type="password" autocomplete="new-password" ref={doublePasswordRef}/>
+        <input placeholder="Senha" type="password" autoComplete="new-password" ref={passwordRef}/>
+        <input placeholder="Confirme a senha" type="password" autoComplete="new-password" ref={doublePasswordRef}/>
         <button type="submit">Cadastrar</button>
       </form>
 
